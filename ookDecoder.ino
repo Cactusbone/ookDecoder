@@ -69,6 +69,21 @@ void reportSerial (const char* s, class DecodeOOK& decoder) {
     decoder.resetDecoder();
 }
 
+void reportSerialV1 (const char* s, class OregonDecoderV1& decoder) {
+    byte pos;
+    const byte* data = decoder.getData(pos);
+    Serial.print(s);
+    Serial.print(' ');
+    for (byte i = 0; i < pos; ++i) {
+        Serial.print(data[i], HEX);
+    }
+
+    // Serial.print(' ');
+    // Serial.print(millis() / 1000);
+    Serial.println();
+
+    decoder.resetDecoder();
+}
 
 void setup () {
     Serial.begin(9600);
@@ -91,11 +106,11 @@ void loop () {
 
     //433Mhz
     if (p != 0) {
-//        Serial.print("[pulse]");
-//        Serial.print(p, HEX);
-//        Serial.println();
+        //Serial.print("[pulse]");
+        //Serial.print(p);
+        //Serial.println();
         if (orscV1.nextPulse(p))
-            reportSerial("OSV1", orscV1);
+            reportSerialV1("OSV1", orscV1);
         if (orscV2.nextPulse(p))
             reportSerial("OSV2", orscV2);  
         if (orscV3.nextPulse(p))
