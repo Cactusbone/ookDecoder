@@ -14,7 +14,6 @@ public:
 
     bool nextPulse (word width) {
         if (state != DONE)
-
             switch (decode(width)) {
                 case -1: resetDecoder(); break;
                 case 1:  done(); break;

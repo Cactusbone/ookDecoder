@@ -45,11 +45,7 @@ HezDecoder hez;
 
 volatile word pulse;
 
-#if defined(__AVR_ATmega1280__)//Arduino
 void ext_int_1(void) {
-#else//JeeNode
-ISR(ANALOG_COMP_vect) {
-#endif
     static word last;
     // determine the pulse length in microseconds, for either polarity
     pulse = micros() - last;
@@ -75,29 +71,12 @@ void reportSerial (const char* s, class DecodeOOK& decoder) {
 
 
 void setup () {
-    Serial.begin(115200);
-    Serial.println("\n[ookDecoder]");
+    Serial.begin(9600);
+    Serial.println("[ookDecoder]");
 
-#if !defined(__AVR_ATmega1280__)//JeeNode code
-    pinMode(13 + PORT, INPUT);  // use the AIO pin
-    digitalWrite(13 + PORT, 1); // enable pull-up
-
-    // use analog comparator to switch at 1.1V bandgap transition
-    ACSR = _BV(ACBG) | _BV(ACI) | _BV(ACIE);
-
-    // set ADC mux to the proper port
-    ADCSRA &= ~ bit(ADEN);
-    ADCSRB |= bit(ACME);
-    ADMUX = PORT - 1;
-#else//Arduino
-//attach our interrupt handler on port int1 (arduino uno port2)
    attachInterrupt(1, ext_int_1, CHANGE);
-//no idea what this is for...
-   DDRE  &= ~_BV(PE5);
-   PORTE &= ~_BV(PE5);
-#endif
 
-    mySwitch.enableTransmit(10);  // Using Pin #10
+   mySwitch.enableTransmit(9);  // Using Pin #9
 }
 
 void loop () {
@@ -112,9 +91,9 @@ void loop () {
 
     //433Mhz
     if (p != 0) {
-        Serial.print("[pulse]");
-        Serial.print(p, HEX);
-        Serial.println();
+//        Serial.print("[pulse]");
+//        Serial.print(p, HEX);
+//        Serial.println();
         if (orscV1.nextPulse(p))
             reportSerial("OSV1", orscV1);
         if (orscV2.nextPulse(p))
@@ -143,9 +122,11 @@ void loop () {
 //            reportSerial("FSX", fsx);
 //    }
     if (Serial.available() > 0) {
+        Serial.println("sending");
         // read the incoming byte:
         incomingByte = Serial.read();
         mySwitch.send(5393, 24);
+        Serial.println("sent");
     }
 }
 

@@ -1,9 +1,16 @@
+// http://wmrx00.sourceforge.net/Arduino/OregonScientific-RF-Protocols.pdf
+// new version !! http://www.osengr.org/WxShield/Downloads/OregonScientific-RF-Protocols-II.pdf
+// bit rate 342Hz reverse manchester
+// => 342Hz in microseconds => 2924
+// pulse lengthened by 255 microseconds
 class OregonDecoderV1 : public DecodeOOK {
 public:
     OregonDecoderV1() {}
 
     virtual char decode (word width) {
-        if (200 <= width && width < 1200) {
+    //width = microseconds
+    //page 6 of protocol pdf
+        if (970 <= width && width < 3400) {
             byte w = width >= 700;
             switch (state) {
                 case UNKNOWN:
