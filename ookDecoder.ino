@@ -44,12 +44,14 @@ HezDecoder hez;
 #define PORT 2
 
 volatile word pulse;
+volatile int state;
 
 void ext_int_1(void) {
     static word last;
     // determine the pulse length in microseconds, for either polarity
     pulse = micros() - last;
     last += pulse;
+    state = digitalRead(3);//port 3 is interrupt 1
 }
 
 void reportSerial (const char* s, class DecodeOOK& decoder) {
@@ -109,7 +111,7 @@ void loop () {
         //Serial.print("[pulse]");
         //Serial.print(p);
         //Serial.println();
-        if (orscV1.nextPulse(p))
+        if (orscV1.nextPulse(p, state))
             reportSerialV1("OSV1", orscV1);
         if (orscV2.nextPulse(p))
             reportSerial("OSV2", orscV2);  

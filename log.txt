@@ -1,0 +1,37 @@
+[ookDecoder]
+PREAMBLE - 12 - 1608 - 0
+NODATA
+SYNC 1 - 12
+Begin Sync
+SYNC 2
+Begin Sync
+SYNC 3 - 0
+pushData - 0
+Payload - 1
+pushData - 1
+Payload - 2
+pushData - 1
+Payload - 3
+pushData - 0
+Payload - 4
+Payload - 4
+payload failed - 0 - 41128
+RESET
+PREAMBLE - 12 - 1600 - 0
+NODATA
+SYNC 1 - 12
+Begin Sync
+SYNC 2
+Begin Sync
+SYNC 3 - 0
+pushData - 0
+Payload - 1
+pushData - 1
+Payload - 2
+pushData - 1
+Payload - 3
+pushData - 0
+Payload - 4
+Payload - 4
+payload failed - 0 - 41132
+RESET
